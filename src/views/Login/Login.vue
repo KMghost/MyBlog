@@ -14,7 +14,7 @@
 			<el-form-item prop="code">
 				<el-input type="text" auto-complete="false" placeholder="点击图片更新验证码" v-model="loginForm.code"
 						  style="width: 250px;margin-left: 5px"></el-input>
-				<img :src="captchaUrl"/>
+				<img :src="captchaUrl" @click="updateChecked"/>
 			</el-form-item>
 			<el-checkbox v-model="checked" class="loginRemenber"> 记住我</el-checkbox>
 			<el-button type="primary" style="width: 100%" @click="submitLogin">登录</el-button>
@@ -27,7 +27,7 @@ export default {
 	name: "Login",
 	data() {
 		return {
-			captchaUrl: "",
+			captchaUrl: "/captcha?time=" + new Date(),
 			loginForm: {
 				username: 'admin',
 				password: '123456',
@@ -42,9 +42,12 @@ export default {
 		}
 	},
 	methods: {
+		updateChecked() {
+			this.captchaUrl = "/captcha?time=" + new Date()
+		},
 		submitLogin() {
 			this.$refs.loginForm.validate((valid) => {
-				if (valid){
+				if (valid) {
 					alert('submit!');
 				} else {
 					this.$message.error('error submit!!')
