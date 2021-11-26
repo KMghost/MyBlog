@@ -40,3 +40,10 @@ node_modules/
 jscoverage_lib/
 bower_components/
 dist/
+
+# Editor directories and files
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
