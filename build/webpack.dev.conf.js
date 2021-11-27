@@ -24,7 +24,8 @@ proxyObj['/']={
   // 不重写请求地址
   pathRewrite:{
     '^/':'/'
-  }
+  },
+  logLevel: 'debug'
 }
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
