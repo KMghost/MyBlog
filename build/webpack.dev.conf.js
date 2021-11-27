@@ -12,7 +12,20 @@ const portfinder = require('portfinder')
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
+let proxyObj = {}
 
+proxyObj['/']={
+  // websocket
+  ws:false,
+  // 目标地址
+  target:'http://localhost:8081',
+  // 发送请求头host 会被设置成 target
+  changeOrigin: true,
+  // 不重写请求地址
+  pathRewrite:{
+    '^/':'/'
+  }
+}
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
@@ -38,7 +51,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       ? { warnings: false, errors: true }
       : false,
     publicPath: config.dev.assetsPublicPath,
-    proxy: config.dev.proxyTable,
+    // proxy: config.dev.proxyTable,
+    proxy: proxyObj,
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,
