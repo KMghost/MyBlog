@@ -81,4 +81,12 @@ export default {
 	text-align: left;
 	margin: 0px 0px 15px 0px;
 }
+
+</style>
+<style>
+/*验证码*/
+.el-form-item__content {
+	display: flex;
+	align-items: center;
+}
 </style>
