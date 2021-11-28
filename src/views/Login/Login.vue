@@ -59,8 +59,8 @@ export default {
 						if (resp) {
 							// 存储用户 token
 							this.loading = false;
-							// const tokenStr = resp.obj.tokenHead + resp.obj.token;
-							window.sessionStorage.setItem('tokenStr', '1123124')
+							const tokenStr = resp.obj.tokenHead + resp.obj.token;
+							window.sessionStorage.setItem('tokenStr', tokenStr)
 							/*设置页面跳转，replace：替换页面，无法返回上一个页面；push：可以返回上一个页面。*/
 							this.$router.replace('/home')
 						}
