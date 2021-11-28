@@ -28,8 +28,6 @@
 </template>
 
 <script>
-import {postRequest} from "../../utils/api";
-
 export default {
 	name: "Login",
 	data() {
@@ -56,13 +54,13 @@ export default {
 		submitLogin() {
 			this.$refs.loginForm.validate((valid) => {
 				if (valid) {
-					this.loading = true;
-					postRequest('/login', this.loginForm).then(resp => {
+					this.loading = false;
+					this.postRequest('/login', this.loginForm).then(resp => {
 						if (resp) {
 							// 存储用户 token
 							this.loading = false;
-							const tokenStr = resp.obj.tokenHead + resp.obj.token;
-							window.sessionStorage.setItem('tokenStr', tokenStr)
+							// const tokenStr = resp.obj.tokenHead + resp.obj.token;
+							window.sessionStorage.setItem('tokenStr', '1123124')
 							/*设置页面跳转，replace：替换页面，无法返回上一个页面；push：可以返回上一个页面。*/
 							this.$router.replace('/home')
 						}

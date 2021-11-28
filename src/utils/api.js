@@ -8,6 +8,7 @@ axios.interceptors.request.use(config => {
     if(window.sessionStorage.getItem('tokenStr')){
         config.headers['Authorization'] = window.sessionStorage.getItem('tokenStr')
     }
+    return config;
 }, err => {
     console.log(err)
 })
