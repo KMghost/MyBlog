@@ -1,6 +1,11 @@
 <template>
 	<div>
-		<el-form ref="loginForm" :rules="rules" :model="loginForm" class="loginContainer">
+		<el-form ref="loginForm" :rules="rules"
+				 v-loading="loading"
+				 element-loading-text="正在登录中，请稍后。。"
+				 element-loading-spinner="el-icon-loading"
+				 element-loading-background="rgba(0,0,0,0.8)"
+				 :model="loginForm" class="loginContainer">
 			<h3 class="loginTitle">系统登录</h3>
 			<el-form-item prop="username">
 				<el-input type="text" placeholder="请输入用户名" v-model="loginForm.username"></el-input>
@@ -36,6 +41,7 @@ export default {
 				code: ''
 			},
 			checked: true,
+			loading: false,
 			rules: {
 				username: [{required: true, message: '请输入用户名', trigger: 'blur'}],
 				password: [{required: true, message: '请输入密码', trigger: 'blur'}],
@@ -50,8 +56,16 @@ export default {
 		submitLogin() {
 			this.$refs.loginForm.validate((valid) => {
 				if (valid) {
+					this.loading = true;
 					postRequest('/login', this.loginForm).then(resp => {
-						alert(JSON.stringify(resp));
+						if (resp) {
+							// 存储用户 token
+							this.loading = false;
+							const tokenStr = resp.obj.tokenHead + resp.obj.token;
+							window.sessionStorage.setItem('tokenStr', tokenStr)
+							/*设置页面跳转，replace：替换页面，无法返回上一个页面；push：可以返回上一个页面。*/
+							this.$router.replace('/home')
+						}
 					})
 				} else {
 					this.$message.error('error submit!!')
