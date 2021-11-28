@@ -14,7 +14,7 @@ const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 let proxyObj = {}
 
-proxyObj['/']={
+proxyObj['/api']={
   // websocket
   ws:false,
   // 目标地址
@@ -23,7 +23,7 @@ proxyObj['/']={
   changeOrigin: true,
   // 不重写请求地址
   pathRewrite:{
-    '^/':'/'
+    '^/api':'/'
   },
   logLevel: 'debug'
 }

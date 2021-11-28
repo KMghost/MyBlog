@@ -32,7 +32,7 @@ export default {
 	name: "Login",
 	data() {
 		return {
-			captchaUrl: "/captcha?time=" + new Date(),
+			captchaUrl: "/api/captcha?time=" + new Date(),
 			loginForm: {
 				username: 'admin',
 				password: '123456',
@@ -49,7 +49,7 @@ export default {
 	},
 	methods: {
 		updateChecked() {
-			this.captchaUrl = "/captcha?time=" + new Date()
+			this.captchaUrl = "/api/captcha?time=" + new Date()
 		},
 		submitLogin() {
 			this.$refs.loginForm.validate((valid) => {
