@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Login from "../views/Login/Login";
-import Home from "../views/Home/Home";
+import Login from "../views/login/Login";
+import Home from "../views/home/Home";
 import test1 from "../views/test1";
 import test2 from "../views/test2";
 
