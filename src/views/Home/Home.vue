@@ -4,11 +4,19 @@
 			<el-header>Header</el-header>
 			<el-container>
 				<el-aside width="200px">
-					<el-menu @select="menuClick">
-						<el-submenu index="1">
-							<template slot="title"><i class="el-icon-location"></i>导航一</template>
-								<el-menu-item index="test1">选项1</el-menu-item>
-								<el-menu-item index="test2">选项2</el-menu-item>
+					<el-menu router>
+						<el-submenu index="1" v-for="(items,index) in this.$router.options.routes"
+									v-if="!items.hidden"
+									:key="index">
+							<template slot="title">
+								<i class="el-icon-location"></i>
+								<span>{{ items.name }}</span>
+							</template>
+							<el-menu-item :index="children.path"
+										  v-for="(children,indexJ) in items.children"
+										  :key="indexJ">
+								{{ children.name }}
+							</el-menu-item>
 						</el-submenu>
 					</el-menu>
 				</el-aside>
@@ -24,9 +32,7 @@
 export default {
 	name: "Home",
 	methods: {
-		menuClick(index){
-			this.$router.push(index)
-		}
+
 	}
 }
 </script>
