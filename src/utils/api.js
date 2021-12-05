@@ -41,7 +41,7 @@ axios.interceptors.response.use(success => {
 // 传送 json 格式的 post 请求
 const base = '/api'
 export const postRequest = (url, params) => {
-    alert(`${base}${url}`)
+    // alert(`${base}${url}`)
     return axios({
         method: 'post',
         url: `${base}${url}`,
@@ -51,7 +51,7 @@ export const postRequest = (url, params) => {
 
 // 传送 json 格式的 put 请求
 export const getRequest = (url, params) => {
-    alert(`${base}${url}`)
+    // alert(`${base}${url}`)
     return axios({
         method: 'get',
         url: `${base}${url}`,

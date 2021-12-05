@@ -1,6 +1,6 @@
 import {getRequest} from "./api";
 
-export const iniMenu = (router, store) => {
+export const initMenu = (router, store) => {
     if (store.state.routes.length > 0) {
         return;
     }
@@ -39,7 +39,9 @@ export const formatRoutes = (routes) => {
             children: children,
             /*使用懒加载的方式*/
             component(resolve) {
-                if (component.startsWith('Emp')) {
+                if (component.startsWith('Home')) {
+                    require(['../views/home/' + component + '.vue'], resolve);
+                } else if (component.startsWith('Emp')) {
                     require(['../views/emp/' + component + '.vue'], resolve);
                 } else if (component.startsWith('Per')) {
                     require(['../views/per/' + component + '.vue'], resolve);
@@ -49,6 +51,8 @@ export const formatRoutes = (routes) => {
                     require(['../views/sta/' + component + '.vue'], resolve);
                 } else if (component.startsWith('Sys')) {
                     require(['../views/sys/' + component + '.vue'], resolve);
+                } else {
+                    console.log('not match anything')
                 }
             }
         }

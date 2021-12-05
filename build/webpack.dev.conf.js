@@ -23,7 +23,7 @@ proxyObj['/api']={
   changeOrigin: true,
   // 不重写请求地址
   pathRewrite:{
-    '^/api':'/'
+    '^/api':'/api'
   },
   logLevel: 'debug'
 }

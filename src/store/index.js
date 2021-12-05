@@ -11,7 +11,7 @@ export default new Vuex.Store({
     // mutations 可以改变 state 中值的方法 (mutations是同步执行的 异步执行用 actions)
     mutations: {
         initRoutes(state, data) {
-
+            state.routes = data;
         }
     }
 })
