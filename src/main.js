@@ -38,6 +38,8 @@ router.beforeEach((to, from, next) => {
     } else {
         if (to.path == '/') {
             next();
+        }else{
+            next('/?redirect='+to.path)
         }
     }
 })

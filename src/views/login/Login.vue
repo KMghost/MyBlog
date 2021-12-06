@@ -54,15 +54,16 @@ export default {
 		submitLogin() {
 			this.$refs.loginForm.validate((valid) => {
 				if (valid) {
-					this.loading = false;
+					this.loading = true;
 					this.postRequest('/login', this.loginForm).then(resp => {
+						this.loading = false
 						if (resp) {
 							// 存储用户 token
-							this.loading = false;
 							const tokenStr = resp.obj.tokenHead + resp.obj.token;
 							window.sessionStorage.setItem('tokenStr', tokenStr)
 							/*设置页面跳转，replace：替换页面，无法返回上一个页面；push：可以返回上一个页面。*/
-							this.$router.replace('/home')
+							let path = this.$route.query.redirect;
+							this.$router.replace(path == '/' || path == undefined ? '/home' : path)
 						}
 					})
 				} else {
