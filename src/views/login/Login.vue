@@ -62,6 +62,15 @@ export default {
 							const tokenStr = resp.obj.tokenHead + resp.obj.token;
 							window.sessionStorage.setItem('tokenStr', tokenStr)
 							/*设置页面跳转，replace：替换页面，无法返回上一个页面；push：可以返回上一个页面。*/
+							/*$route 和 $router的区别
+								$route：
+									1、$route是一个跳转的路由对象，每一个路由都会有一个$route对象，是一个局部的对象
+										可以获取对应的name，path，params，query等
+								$router：
+									1、使用 vue-router 的全局对象，通过Vue.use(VueRouter)和Vu构造函数得到一个router的实例对象
+									2、$router.push({path:'home'})，本质是向history栈中添加一个路由，在我们看来是切换路由，但本质是在添加一个history记录
+										$router.replace({path:'home'})，//替换路由，没有历史记录
+							* */
 							let path = this.$route.query.redirect;
 							this.$router.replace(path == '/' || path == undefined ? '/home' : path)
 						}
