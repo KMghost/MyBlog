@@ -97,7 +97,7 @@
 				</tr>
 				<tr>
 					<td>
-						<el-tag>是否激活</el-tag>
+						<el-tag>是否启用</el-tag>
 					</td>
 					<td>
 						<el-switch
@@ -106,8 +106,8 @@
 								active-color="#13ce66"
 								inactive-color="#ff4949">
 <!--								展示的文本-->
-<!--								active-text="已激活"-->
-<!--								inactive-text="未激活"-->
+<!--								active-text="已启用"-->
+<!--								inactive-text="未启用"-->
 <!--						>-->
 						</el-switch>
 					</td>
