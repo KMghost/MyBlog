@@ -31,7 +31,7 @@ export default {
 	name: "SysBasic",
 	data() {
 		return {
-			activeName: "PosMana"
+			activeName: "JoblevelMana"
 		}
 	},
 	components: {
