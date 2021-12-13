@@ -212,4 +212,9 @@ export default {
 	width: 200px;
 	margin-left: 8px;
 }
+
+tr {
+	display: block;
+	margin-top: 6px;
+}
 </style>
