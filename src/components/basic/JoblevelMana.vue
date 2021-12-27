@@ -128,6 +128,7 @@ export default {
 		return {
 			jl: {
 				name: '',
+				titleLevel: ''
 			},
 			titleLevels: [
 				'正高级',
