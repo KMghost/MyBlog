@@ -19,7 +19,7 @@ Vue.prototype.putRequest = putRequest
 Vue.prototype.deleteRequest = deleteRequest
 
 Vue.use(VueAxios, axios)
-Vue.use(ElementUI);
+Vue.use(ElementUI,{size:"small"});
 // 路由守卫
 router.beforeEach((to, from, next) => {
     if (window.sessionStorage.getItem('tokenStr')) {

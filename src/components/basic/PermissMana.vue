@@ -8,7 +8,7 @@
 			<el-button size="small" type="primary" icon="el-icon-plus">添加角色</el-button>
 		</div>
 		<div class="permissManaMain">
-			<el-collapse accordion @change="change">
+			<el-collapse v-model="activeName" accordion @change="change">
 				<el-collapse-item :title="r.nameZh" :name="r.id" v-for="(r,index) in roles" :key="index">
 					<el-card class="box-card">
 						<div slot="header" class="clearfix">
@@ -20,8 +20,13 @@
 							<el-tree show-checkbox
 									 :data="allMenus"
 									 :props="defaultProps"
+									 ref="tree"
 									 :default-checked-keys="selectedMenus"
 									 node-key="id"></el-tree>
+							<div style="display: flex;justify-content: flex-end">
+								<el-button size="mini" @click="cancelUpdate">取消修改</el-button>
+								<el-button size="mini" @click="doUpdate(r.id,index)" type="primary">确认修改</el-button>
+							</div>
 						</div>
 					</el-card>
 				</el-collapse-item>
@@ -39,29 +44,55 @@ export default {
 				nameZh: '',
 				name: ''
 			},
-			activeName: '2',
 			roles: [],
 			allMenus: [],
 			defaultProps: {
 				children: 'children',
 				label: 'name'
 			},
-			selectedMenus: []
+			selectedMenus: [],
+			activeName: '-1'
 		}
 	},
 	mounted() {
 		this.initRoles();
 	},
 	methods: {
+		cancelUpdate(){
+			console.log(this.activeName)
+			this.activeName = '-1'
+		},
+		doUpdate(rid, index) {
+			/*
+			*ref 有三种用法：
+			*	1、ref 加在普通的元素上，用this.ref.name 获取到的是dom元素
+			*	2、ref 加在子组件上，用this.ref.name 获取到的是组件实例，可以使用组件的所有方法。
+			*	3、如何利用 v-for 和 ref 获取一组数组或者dom 节点
+			* */
+			console.log(this.$refs.tree)
+			let tree = this.$refs.tree[index];
+			let selectedKeys = tree.getCheckedKeys(true);
+			let url = '/system/basic/permiss/?rid=' + rid;
+			selectedKeys.forEach(key => {
+				url += '&media=' + key;
+			});
+			console.log(selectedKeys)
+			this.putRequest(url).then(resp => {
+				if (resp) {
+					this.initRoles();
+					this.activeName = -1;
+				}
+			})
+		},
 		change(rid) {
 			if (rid) {
 				this.initAllMenus();
 				this.initSelectedMenus(rid);
 			}
 		},
-		initSelectedMenus(rid){
-			this.getRequest('/system/basic/permiss/mid/'+rid).then(resp=>{
-				if(resp){
+		initSelectedMenus(rid) {
+			this.getRequest('/system/basic/permiss/mid/' + rid).then(resp => {
+				if (resp) {
 					this.selectedMenus = resp;
 				}
 			})
