@@ -10,7 +10,27 @@
 				:data="deps"
 				:props="defaultProps"
 				:filter-node-method="filterNode"
+				:expand-on-click-node="false"
 				ref="tree">
+			<span class="custom-tree-node" slot-scope="{ node, data }" style="display: flex;justify-content: space-between;width: 100%">
+				<span>{{ data.name }}</span>
+				<span>
+					<el-button
+							  type="primary"
+							  size="mini"
+							  class="depBtn"
+							  @click="() => append(data)">
+						添加部门
+					</el-button>
+					<el-button
+							  type="danger"
+							  size="mini"
+							  class="depBtn"
+							  @click="() => remove(node, data)">
+						删除部门
+					</el-button>
+        		</span>
+      	</span>
 		</el-tree>
 	</div>
 </template>
@@ -58,5 +78,7 @@ export default {
 </script>
 
 <style scoped>
-
+	.depBtn {
+		padding: 2px;
+	}
 </style>
