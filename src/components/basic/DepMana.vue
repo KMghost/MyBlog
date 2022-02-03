@@ -129,7 +129,7 @@ export default {
 			this.dialogVisible = true;
 
 		},
-		remveDepFromDeps(p, deps, id) {
+		removeDepFromDeps(p, deps, id) {
 			for (let i = 0; i < deps.length; i++) {
 				let d = deps[i];
 				if (d.id == id) {
@@ -155,7 +155,7 @@ export default {
 				).then(() => {
 					this.deleteRequest('/system/basic/department/' + data.id).then(resp => {
 						if (resp) {
-							this.remveDepFromDeps(null, this.deps, data.id)
+							this.removeDepFromDeps(null, this.deps, data.id)
 						}
 					})
 				}).catch(() => {
