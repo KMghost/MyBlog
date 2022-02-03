@@ -36,8 +36,7 @@
 		<el-dialog
 				title="添加部门"
 				:visible.sync="dialogVisible"
-				width="30%"
-				:before-close="handleClose">
+				width="30%">
 			<div>
 				<table>
 					<tr>
@@ -105,9 +104,10 @@ export default {
 			for (let i = 0; i < deps.length; i++) {
 				let d = deps[i];
 				if (d.id == dep.parentId) {
-					alert(JSON.stringify(d.children.concat(dep)))
 					d.children = d.children.concat(dep);
-					alert(JSON.stringify(d.children))
+					if (d.children.length > 0) {
+						d.isParent = true;
+					}
 					return;
 				} else {
 					this.addDep2Deps(d.children, dep);
@@ -139,7 +139,7 @@ export default {
 					}
 					return;
 				} else {
-					this.remveDepFromDeps(d, d.children, id);
+					this.removeDepFromDeps(d, d.children, id);
 				}
 			}
 		},
