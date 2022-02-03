@@ -101,16 +101,16 @@ export default {
 			};
 			this.pname = '';
 		},
-		addDep2Deps(deps, dep){
-			for (let i=0;i<deps.length; i++){
+		addDep2Deps(deps, dep) {
+			for (let i = 0; i < deps.length; i++) {
 				let d = deps[i];
-				if (d.id == dep.parentId){
+				if (d.id == dep.parentId) {
 					alert(JSON.stringify(d.children.concat(dep)))
 					d.children = d.children.concat(dep);
 					alert(JSON.stringify(d.children))
-					return ;
+					return;
 				} else {
-					this.addDep2Deps(d.children,dep);
+					this.addDep2Deps(d.children, dep);
 				}
 			}
 		},
@@ -129,8 +129,38 @@ export default {
 			this.dialogVisible = true;
 
 		},
+		remveDepFromDeps(p, deps, id) {
+			for (let i = 0; i < deps.length; i++) {
+				let d = deps[i];
+				if (d.id == id) {
+					deps.splice(i, 1);
+					if (deps.length == 0) {
+						p.isParent = false;
+					}
+					return;
+				} else {
+					this.remveDepFromDeps(d, d.children, id);
+				}
+			}
+		},
 		deleteDep(data) {
-			console.log(JSON.stringify(data))
+			if (data.isParent) {
+				this.$message.error('父部门删除失败！')
+			} else {
+				this.$confirm('此操作将永久删除[' + data.name + ']部门, 是否继续 ? ', '提示', {
+							confirmButtonText: '确定',
+							cancelButtonText: '取消',
+							type: 'warning'
+						}
+				).then(() => {
+					this.deleteRequest('/system/basic/department/' + data.id).then(resp => {
+						if (resp) {
+							this.remveDepFromDeps(null, this.deps, data.id)
+						}
+					})
+				}).catch(() => {
+				});
+			}
 		},
 		// 如果没有value，就全部展开，如果有值，
 		// data 是当前结点下面的整条数据
