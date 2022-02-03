@@ -12,32 +12,77 @@
 				:filter-node-method="filterNode"
 				:expand-on-click-node="false"
 				ref="tree">
-			<span class="custom-tree-node" slot-scope="{ node, data }" style="display: flex;justify-content: space-between;width: 100%">
+			<span class="custom-tree-node" slot-scope="{ node, data }"
+				  style="display: flex;justify-content: space-between;width: 100%">
 				<span>{{ data.name }}</span>
 				<span>
 					<el-button
-							  type="primary"
-							  size="mini"
-							  class="depBtn"
-							  @click="() => append(data)">
+							type="primary"
+							size="mini"
+							class="depBtn"
+							@click="() => showAddDep(data)">
 						添加部门
 					</el-button>
 					<el-button
-							  type="danger"
-							  size="mini"
-							  class="depBtn"
-							  @click="() => remove(node, data)">
+							type="danger"
+							size="mini"
+							class="depBtn"
+							@click="() => deleteDep(data)">
 						删除部门
 					</el-button>
         		</span>
       	</span>
 		</el-tree>
+		<el-dialog
+				title="添加部门"
+				:visible.sync="dialogVisible"
+				width="30%"
+				:before-close="handleClose">
+			<div>
+				<table>
+					<tr>
+						<td>
+							<el-tag>上级部门</el-tag>
+						</td>
+						<td>{{ pname }}</td>
+					</tr>
+					<tr>
+						<td>
+							<el-tag>部门名称</el-tag>
+						</td>
+						<td>
+							<el-input v-model="dep.name" placeholder="请输入部门名称..."></el-input>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<span slot="footer" class="dialog-footer">
+				<el-button @click="dialogVisible = false">取 消</el-button>
+				<el-button type="primary" @click="doAddDep">确 定</el-button>
+	  		</span>
+		</el-dialog>
 	</div>
 </template>
 
 <script>
 export default {
 	name: "DepMana",
+	data() {
+		return {
+			filterText: '',
+			deps: [],
+			defaultProps: {
+				children: 'children',
+				label: 'name'
+			},
+			dialogVisible: false,
+			dep: {
+				name: '',
+				parentId: -1
+			},
+			pname: ''
+		}
+	},
 	watch: {
 		// 这里的filter 调用的是 filter-node-method
 		// 这里的 val 是输入框中绑定的 filterText
@@ -49,6 +94,44 @@ export default {
 		this.initDeps();
 	},
 	methods: {
+		initDep() {
+			this.dep = {
+				name: '',
+				parentId: -1
+			};
+			this.pname = '';
+		},
+		addDep2Deps(deps, dep){
+			for (let i=0;i<deps.length; i++){
+				let d = deps[i];
+				if (d.id == dep.parentId){
+					alert(JSON.stringify(d.children.concat(dep)))
+					d.children = d.children.concat(dep);
+					alert(JSON.stringify(d.children))
+					return ;
+				} else {
+					this.addDep2Deps(d.children,dep);
+				}
+			}
+		},
+		doAddDep() {
+			this.postRequest('/system/basic/department/', this.dep).then(resp => {
+				if (resp) {
+					this.addDep2Deps(this.deps, resp.obj);
+					this.dialogVisible = false;
+					this.initDep();
+				}
+			})
+		},
+		showAddDep(data) {
+			this.dep.parentId = data.id;
+			this.pname = data.name;
+			this.dialogVisible = true;
+
+		},
+		deleteDep(data) {
+			console.log(JSON.stringify(data))
+		},
 		// 如果没有value，就全部展开，如果有值，
 		// data 是当前结点下面的整条数据
 		filterNode(value, data) {
@@ -63,22 +146,12 @@ export default {
 				}
 			})
 		}
-	},
-	data() {
-		return {
-			filterText: '',
-			deps: [],
-			defaultProps: {
-				children: 'children',
-				label: 'name'
-			}
-		}
 	}
 }
 </script>
 
 <style scoped>
-	.depBtn {
-		padding: 2px;
-	}
+.depBtn {
+	padding: 2px;
+}
 </style>
