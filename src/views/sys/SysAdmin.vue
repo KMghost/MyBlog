@@ -1,9 +1,9 @@
 <template>
 	<div>
 		<div style="display: flex;justify-content: center;margin-top: 10px">
-			<el-input placeholder="通过用户名搜索用户..." prefix-icon="el-icon-search"
+			<el-input v-model="keyword" placeholder="通过用户名搜索用户..." prefix-icon="el-icon-search"
 					  style="width: 400px;margin-right: 10px"></el-input>
-			<el-button type="primary" icon="el-icon-search">搜索</el-button>
+			<el-button type="primary" icon="el-icon-search" @click="soSearch">搜索</el-button>
 
 		</div>
 		<div class="admin-container">
@@ -11,7 +11,7 @@
 				<div slot="header" class="clearfix">
 					<span>{{ admin.name }}</span>
 					<el-button style="float: right; padding: 3px 0;color: red" type="text"
-							   icon="el-icon-delete"></el-button>
+							   icon="el-icon-delete" @click="deleteAdmin(admin)"></el-button>
 				</div>
 				<div>
 					<div class="img-container">
@@ -27,6 +27,7 @@
 									v-model="admin.enabled"
 									active-color="#13ce66"
 									inactive-color="#ff4949"
+									@change="enabledChange(admin)"
 									active-text="启用"
 									inactive-text="禁用">
 							</el-switch>
@@ -34,7 +35,9 @@
 					</div>
 					<div>
 						用户角色:
-						<el-tag type="success" style="margin-right: 4px" v-for="(role,indexj) in admin.roles" :key="indexj">{{ role.nameZh }}</el-tag>
+						<el-tag type="success" style="margin-right: 4px" v-for="(role,indexj) in admin.roles"
+								:key="indexj">{{ role.nameZh }}
+						</el-tag>
 						<el-button type="text" icon="el-icon-more"></el-button>
 					</div>
 					<div>
@@ -53,19 +56,45 @@ export default {
 	data() {
 		return {
 			admins: [],
+			keyword: '',
 		}
 	},
 	mounted() {
 		this.initAdmins();
 	},
 	methods: {
+		enabledChange(admin) {
+			this.putRequest('/system/admin/', admin).then(resp => {
+				if (resp) {
+					this.initAdmins();
+				}
+			})
+		},
+		deleteAdmin(admin) {
+			this.$confirm('此操作将永久删除该[' + admin.name + ']操作员, 是否继续 ? ', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}
+			).then(() => {
+				this.deleteRequest('/system/basic/department/' + admin.id).then(resp => {
+					if (resp) {
+						this.initAdmins();
+					}
+				})
+			}).catch(() => {
+			});
+		},
 		initAdmins() {
-			this.getRequest('/system/admin/').then(resp => {
+			this.getRequest('/system/admin/?keywords=' + this.keyword).then(resp => {
 				if (resp) {
 					this.admins = resp;
 				}
 			})
-		}
+		},
+		soSearch() {
+			this.initAdmins();
+		},
 	}
 }
 </script>
