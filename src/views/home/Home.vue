@@ -3,16 +3,23 @@
 		<el-container>
 			<el-header class="homeHeader">
 				<div class="title">云E办</div>
-				<el-dropdown class="userInfo" @command="commandHandler">
+				<div>
+					<el-button icon="el-icon-bell"
+							   type="text"
+							   size="normal"
+							   style="margin-right: 8px; color: black"
+							   @click="goChat"></el-button>
+					<el-dropdown class="userInfo" @command="commandHandler">
 					<span class="el-dropdown-link">
 						{{ user.name }}<i><img :src="user.userFace"></i>
 					</span>
-					<el-dropdown-menu slot="dropdown">
-						<el-dropdown-item command="userinfo">个人中心</el-dropdown-item>
-						<el-dropdown-item command="setting">设置</el-dropdown-item>
-						<el-dropdown-item command="logout">注销登录</el-dropdown-item>
-					</el-dropdown-menu>
-				</el-dropdown>
+						<el-dropdown-menu slot="dropdown">
+							<el-dropdown-item command="userinfo">个人中心</el-dropdown-item>
+							<el-dropdown-item command="setting">设置</el-dropdown-item>
+							<el-dropdown-item command="logout">注销登录</el-dropdown-item>
+						</el-dropdown-menu>
+					</el-dropdown>
+				</div>
 			</el-header>
 			<el-container>
 				<el-aside width="200px" style="margin-right: 10px">
@@ -33,7 +40,8 @@
 					</el-menu>
 				</el-aside>
 				<main style="width: 100%">
-					<el-breadcrumb separator-class="el-icon-arrow-right" style="margin: 10px 8px" v-if="this.$router.currentRoute.path!='/home'">
+					<el-breadcrumb separator-class="el-icon-arrow-right" style="margin: 10px 8px"
+								   v-if="this.$router.currentRoute.path!='/home'">
 						<el-breadcrumb-item :to="{ path: '/home'}">首页</el-breadcrumb-item>
 						<el-breadcrumb-item>{{ this.$router.currentRoute.name }}</el-breadcrumb-item>
 					</el-breadcrumb>
@@ -62,6 +70,9 @@ export default {
 		}
 	},
 	methods: {
+		goChat() {
+			this.$router.push('/chat');
+		},
 		commandHandler(command) {
 			if (command == 'logout') {
 				this.$confirm('此操作将注销登录，是否继续?', '提示', {
@@ -121,7 +132,7 @@ export default {
 	margin-left: 8px;
 }
 
-.homeWelcome{
+.homeWelcome {
 	text-align: center;
 	font-size: 30px;
 	font-family: 华文楷体;
@@ -130,7 +141,7 @@ export default {
 	width: 100%;
 }
 
-.homeRouterView{
+.homeRouterView {
 	margin-top: 10px;
 }
 </style>

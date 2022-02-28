@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Login from "../views/login/Login";
+import FriendChat from "../views/chat/FriendChat";
+import Home from "../views/home/Home";
 
 Vue.use(Router)
 const routes = [
@@ -9,6 +11,17 @@ const routes = [
         name: 'Login',
         component: Login,
         hidden:true
+    },{
+        path: '/home',
+        name: 'Home',
+        component: Home,
+        children: [
+            {
+                path: '/chat',
+                name: 'Chat',
+                component: FriendChat
+            }
+        ]
     }
 ]
 
