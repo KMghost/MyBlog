@@ -15,7 +15,7 @@
 				</el-dropdown>
 			</el-header>
 			<el-container>
-				<el-aside width="200px">
+				<el-aside width="200px" style="margin-right: 10px">
 					<el-menu router unique-opened>
 						<el-submenu :index="index+''" v-for="(items,index) in routes"
 									v-if="!items.hidden"
